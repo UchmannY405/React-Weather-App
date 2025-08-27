@@ -4,6 +4,7 @@ import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
+import CitySearch from './citySearch';
 function App() {
   return (
     <>
@@ -17,6 +18,7 @@ function App() {
         </Toolbar>
       </AppBar>
     </Box>
+    <CitySearch />
     </Container>
     </>
   )
