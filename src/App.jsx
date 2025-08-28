@@ -17,6 +17,7 @@ function App() {
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1, textAlign:'center'}}>
             My Weather App
+            <WbCloudyIcon/>
           </Typography>
         </Toolbar>
       </AppBar>
