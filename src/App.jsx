@@ -5,6 +5,9 @@ import Toolbar from '@mui/material/Toolbar';
 import Typography from '@mui/material/Typography';
 import Container from '@mui/material/Container';
 import CitySearch from './citySearch';
+import WbCloudyIcon from '@mui/icons-material/WbCloudy';
+
+
 function App() {
   return (
     <>
