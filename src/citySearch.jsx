@@ -73,7 +73,14 @@ function CitySearch() {
         onChange={(e, newInputValue) => {
           if (newInputValue !== null) setSelectedCity(newInputValue);
         }}
-          sx={{ width: 400, margin: "auto", marginBottom: 10 }}
+          sx={{
+            width: { xs: "100%", sm: 480 },
+            margin: "auto",
+            maxWidth: "100%",
+            //mx: 'auto',
+            //marginBottom: 10,
+            mb: { xs: 3, sm: 5 },
+          }}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -97,20 +104,78 @@ function CitySearch() {
         )}
       />
       {weatherDetails && (
-          <Paper elevation={3} style={{ padding: "1rem" }}>
-        <h2>Weather Details</h2>
-        <List>
-          <ListItem>
-                <strong>Description: </strong> {weatherDetails.Description}{" "}
+          <Box sx={{ px: { xs: 1.5, sm: 0 } }}>
+            <Paper
+              elevation={3}
+              sx={{
+                //padding: "1rem",
+                p: { xs: 2, sm: 3, md: 4 },
+                maxWidth: 800,
+                width: "100%",
+                mx: { xs: "auto", sm: "auto" },
+                borderRadius: 2,
+                boxSizing: "border-box",
+                overflowWrap: "anywhere",
+              }}
+            >
+              <Box sx={{ mb: { xs: 1, sm: 2 } }}>
+                <Box
+                  component="h2"
+                  sx={{
+                    m: 0,
+                    fontWeight: 700,
+                    fontSize: { xs: "1.25rem", sm: "1.5rem" },
+                    lineHeight: 1.3,
+                  }}
+                >
+                  Weather Details
+                </Box>
+              </Box>
+              <List
+                sx={{
+                  p: 0,
+                  "& .MuiListItem-root": {
+                    px: 0,
+                    py: { xs: 0.5, sm: 1 },
+                    alignItems: "center",
+                    flexWrap: "wrap",
+                  },
+                  "& strong": {
+                    marginRight: 0.5,
+                  },
+                }}
+              >
+                <ListItem
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: 1,
+                  }}
+                >
+                  <strong>Description: </strong>
+                  <span>{weatherDetails.Description}</span>
+                  <Box
+                    component="img"
+                    src={weatherDetails.iconUrl}
+                    alt="Weather icon"
+                    sx={{
+                      width: { xs: 36, sm: 48 },
+                      height: "auto",
+                      ml: 1,
+                    }}
+                  />
           </ListItem>
           <ListItem>
-           <strong>Temperature: </strong> {weatherDetails.Temperature}˚C
+                  <strong>Temperature: </strong>
+                  <span>{weatherDetails.Temperature}˚C</span>
           </ListItem>
           <ListItem>
-            <strong>Wind Speed: </strong> {weatherDetails.Wind_Speed} m/s
+                  <strong>Wind Speed: </strong>
+                  <span>{weatherDetails.Wind_Speed} m/s</span>
           </ListItem>
           <ListItem>
-            <strong>Humidity: </strong> {weatherDetails.Humidity}%
+                  <strong>Humidity: </strong>
+                  <span>{weatherDetails.Humidity}%</span>
           </ListItem>
         </List>
         <Box display="flex" justifyContent="flex-end" mt={2}>
@@ -118,11 +183,13 @@ function CitySearch() {
            variant="text"
            endIcon={<CancelIcon />}
            onClick={() => setWeatherDetails(null)}
+                  sx={{ fontSize: { xs: "0.9rem", sm: "1rem" } }}
           >
           Close
           </Button>
         </Box>
       </Paper>
+          </Box>
       )}
       </>
     );
