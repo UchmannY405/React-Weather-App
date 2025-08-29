@@ -49,8 +49,13 @@ Users can search for a city, select from suggestions, and view current weather d
 
 ## 📸 Screenshots
 
+### Autocomplete Search Feature
 ![Autocomplete Search Feature](./src/App_Screenshots/Autcomplete%20Search%20Feature.jpg)  
+
+### Mobile Device View
 ![Mobile App view](./src/App_Screenshots/Mobile%20View.jpg)
+
+### Desktop View
 ![Desktop view](./src/App_Screenshots/Desktop%20View.jpg)  
 
 ---
