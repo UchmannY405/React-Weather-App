@@ -21,7 +21,7 @@ function CitySearch() {
         const cityTimeoutCall = setTimeout(() => { 
             ( async () => {
             try {
-            const response = await fetch(`http://api.openweathermap.org/geo/1.0/direct?q=${text}&limit=10&appid=${import.meta.env.VITE_CITY_API_KEY}`);
+            const response = await fetch(`https://api.openweathermap.org/geo/1.0/direct?q=${text}&limit=10&appid=${import.meta.env.VITE_CITY_API_KEY}`);
             const data = await response.json();
             console.log("API response:", data)
             const cities = data.map(city => ({
@@ -63,16 +63,16 @@ function CitySearch() {
     }
     } 
     return (
-        <>
+      <>
         <Autocomplete
-        freeSolo
-        options={cityOptions}
-        inputValue={text}
-        onInputChange={(e, newInputValue) => setText(newInputValue)}
-        value={selectedCity}
-        onChange={(e, newInputValue) => {
-          if (newInputValue !== null) setSelectedCity(newInputValue);
-        }}
+          freeSolo
+          options={cityOptions}
+          inputValue={text}
+          onInputChange={(e, newInputValue) => setText(newInputValue)}
+          value={selectedCity}
+          onChange={(e, newInputValue) => {
+            if (newInputValue !== null) setSelectedCity(newInputValue);
+          }}
           sx={{
             width: { xs: "100%", sm: 480 },
             margin: "auto",
@@ -81,29 +81,29 @@ function CitySearch() {
             //marginBottom: 10,
             mb: { xs: 3, sm: 5 },
           }}
-        renderInput={(params) => (
-          <TextField
-            {...params}
-            label="Search City"
-            InputProps={{
-              ...params.InputProps,
-              endAdornment: (
-                <>
-                {params.InputProps.endAdornment}
-                <InputAdornment position="end">
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Search City"
+              InputProps={{
+                ...params.InputProps,
+                endAdornment: (
+                  <>
+                    {params.InputProps.endAdornment}
+                    <InputAdornment position="end">
                       <IconButton
                         onClick={() => fetchWeatherByCity(selectedCity || text)}
                       >
-                    <SearchIcon />
-                  </IconButton>
-                </InputAdornment>
-                </>
-              )
-            }}
-          />
-        )}
-      />
-      {weatherDetails && (
+                        <SearchIcon />
+                      </IconButton>
+                    </InputAdornment>
+                  </>
+                )
+              }}
+            />
+          )}
+        />
+        {weatherDetails && (
           <Box sx={{ px: { xs: 1.5, sm: 0 } }}>
             <Paper
               elevation={3}
@@ -164,35 +164,43 @@ function CitySearch() {
                       ml: 1,
                     }}
                   />
-          </ListItem>
-          <ListItem>
+                </ListItem>
+                <ListItem>
                   <strong>Temperature: </strong>
                   <span>{weatherDetails.Temperature}˚C</span>
-          </ListItem>
-          <ListItem>
+                </ListItem>
+                <ListItem>
                   <strong>Wind Speed: </strong>
                   <span>{weatherDetails.Wind_Speed} m/s</span>
-          </ListItem>
-          <ListItem>
+                </ListItem>
+                <ListItem>
                   <strong>Humidity: </strong>
                   <span>{weatherDetails.Humidity}%</span>
-          </ListItem>
-        </List>
-        <Box display="flex" justifyContent="flex-end" mt={2}>
-          <Button
-           variant="text"
-           endIcon={<CancelIcon />}
-           onClick={() => setWeatherDetails(null)}
+                </ListItem>
+              </List>
+              <Box display="flex" justifyContent="flex-end" mt={2}>
+                <Button
+                  variant="text"
+                  endIcon={<CancelIcon />}
+                  onClick={() => setWeatherDetails(null)}
                   sx={{ fontSize: { xs: "0.9rem", sm: "1rem" } }}
-          >
-          Close
-          </Button>
-        </Box>
-      </Paper>
+                >
+                  Close
+                </Button>
+              </Box>
+            </Paper>
           </Box>
-      )}
+        )}
       </>
     );
   }
   
   export default CitySearch
+  
+  /*
+  1. A user types a city (text state).
+  2. this is used to fetch the city options based on the text (city options state)
+  3. when the user selects a city (selectedCity state), this automatically becomes the text state
+  4. when the user clicks the search button, its used to fetch the waether details which is display on the 
+  paper (weatherDetails state);
+  */
