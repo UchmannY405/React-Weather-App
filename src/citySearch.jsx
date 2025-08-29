@@ -67,14 +67,13 @@ function CitySearch() {
         <Autocomplete
         freeSolo
         options={cityOptions}
-        
         inputValue={text}
         onInputChange={(e, newInputValue) => setText(newInputValue)}
         value={selectedCity}
         onChange={(e, newInputValue) => {
           if (newInputValue !== null) setSelectedCity(newInputValue);
         }}
-        sx={{ width: 400, margin:'auto', marginBottom:10}}
+          sx={{ width: 400, margin: "auto", marginBottom: 10 }}
         renderInput={(params) => (
           <TextField
             {...params}
@@ -85,7 +84,9 @@ function CitySearch() {
                 <>
                 {params.InputProps.endAdornment}
                 <InputAdornment position="end">
-                  <IconButton onClick={() => fetchWeatherByCity(selectedCity || text)}>
+                      <IconButton
+                        onClick={() => fetchWeatherByCity(selectedCity || text)}
+                      >
                     <SearchIcon />
                   </IconButton>
                 </InputAdornment>
@@ -96,11 +97,11 @@ function CitySearch() {
         )}
       />
       {weatherDetails && (
-      <Paper elevation={3} style={{ padding: '1rem'}}>
+          <Paper elevation={3} style={{ padding: "1rem" }}>
         <h2>Weather Details</h2>
         <List>
           <ListItem>
-            <strong>Description: </strong> {weatherDetails.Description}  <img src={weatherDetails.iconUrl} alt="Weather icon" />
+                <strong>Description: </strong> {weatherDetails.Description}{" "}
           </ListItem>
           <ListItem>
            <strong>Temperature: </strong> {weatherDetails.Temperature}˚C
@@ -124,8 +125,7 @@ function CitySearch() {
       </Paper>
       )}
       </>
-      
-    )
+    );
   }
   
   export default CitySearch
