@@ -1,4 +1,8 @@
 import * as React from 'react';
+import Home from './pages/Home';
+import LoginForm from './pages/Login';
+import RegisterForm from './pages/Register';
+import Dashboard from './pages/Dashboard';
 import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
