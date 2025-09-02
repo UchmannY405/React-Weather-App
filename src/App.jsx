@@ -1,5 +1,6 @@
 import * as React from 'react';
 import Home from './pages/Home';
+import { Routes,Route } from 'react-router-dom';
 import LoginForm from './pages/Login';
 import RegisterForm from './pages/Register';
 import Dashboard from './pages/Dashboard';
@@ -68,7 +69,19 @@ function App() {
         </Toolbar>
       </AppBar>
     </Box>
-    <CitySearch />
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="login" element={<LoginForm />} />
+          <Route path="register" element={<RegisterForm />} />
+          <Route
+            path="/dashboard"
+            element={
+              <ProtectedRoute>
+                <Dashboard />
+              </ProtectedRoute>
+            }
+          />
+        </Routes>
     </Container>
     </>
   )
