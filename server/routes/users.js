@@ -4,33 +4,35 @@ const bcrypt = require("bcryptjs");
 const User = require('../models/User');
 const {updateProfileSchema,changePasswordSchema} = require('../validation/authSchemas')
 const {validate} = require('../validation/validate');
+const { UnauthenticatedError, NotFoundError } = require("../errors/customAPIError");
+const {StatusCodes} = require("http-status-codes");
 
 Route.get('/me',async (req,res)=>{
     const { name } = req.user;
 
     if(!name)
     {
-      throw new Error('Unauthorized user')
+      throw new UnauthenticatedError('Unauthorized user','AUTH_REQUIRED')
     }
 
-    res.status(200).json({msg:`Welcome ${name}!`});
+    res.status(StatusCodes.OK).json({msg:`Welcome ${name}!`});
 })
 
 Route.patch("/me",validate(updateProfileSchema),async (req, res) => {
   const { userID } = req.user;
 
   if (!userID) {
-    throw new Error("Unauthorized user");
+    throw new UnauthenticatedError("Unauthorized user", "AUTH_REQUIRED");
   }
 
   const user = await User.findByIdAndUpdate({_id:userID},req.body,{new:true});
 
   if (!user)
   {
-    throw new Error('User Not found');
+    throw new NotFoundError('User Not found','USER_NOT_FOUND');
   }
 
-  res.status(200).json({user});
+  res.status(StatusCodes.OK).json({user});
 
 
 });
@@ -41,20 +43,20 @@ Route.patch("/me/password",validate(changePasswordSchema),async (req, res) => {
   const {currentPassword, newPassword} = req.body;
 
   if (!userID) {
-     throw new Error("Unauthorized user");
+     throw new UnauthenticatedError("Unauthorized user", "AUTH_REQUIRED");
   };
 
   const user = await User.findById(userID);
 
   if (!user) {
-     throw new Error("User not found");
+     throw new NotFoundError("User Not found", "USER_NOT_FOUND");
   }
 
   const isCorrectPassword = user.verifyPassword(currentPassword,user.password);
 
   if(!isCorrectPassword)
   {
-    throw new Error('Incorrect credentials')
+    throw new UnauthenticatedError('Incorrect credentials', 'INVALID_CREDENTIALS');
   }
 
   const salt = await bcrypt.genSalt(10);
@@ -62,7 +64,7 @@ Route.patch("/me/password",validate(changePasswordSchema),async (req, res) => {
 
   const updatedUser = await User.findByIdAndUpdate({_id:userID},{password},{new:true})
 
-  res.status(201).json({updatedUser});
+  res.status(StatusCodes.OK).json({updatedUser});
 });
 
 module.exports=Route;
