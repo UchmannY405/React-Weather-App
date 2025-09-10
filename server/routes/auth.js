@@ -39,7 +39,13 @@ Route.post("/login", validate(loginSchema),async(req, res) => {
 
   const token = JWT.sign({userID:user._id,name:user.name},process.env.JWT_SECRET,{expiresIn:"30d"});
 
-  res.status(StatusCodes.OK).json({ msg: "Login Successful", token });
+  res.status(StatusCodes.OK).json({
+      success: true,
+      data: {
+        token,
+        user: { _id: user._id, name: user.name, email: user.email },
+      },
+    });
 });
 
 Route.get("/me",dashAuth,(req, res) => {
