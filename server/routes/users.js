@@ -8,14 +8,16 @@ const { UnauthenticatedError, NotFoundError } = require("../errors/customAPIErro
 const {StatusCodes} = require("http-status-codes");
 
 Route.get('/me',async (req,res)=>{
-    const { name } = req.user;
+    const { userID } = req.user;
 
-    if(!name)
+    const user = await User.findById(userID).select('_id name email')
+
+    if(!user)
     {
-      throw new UnauthenticatedError('Unauthorized user','AUTH_REQUIRED')
+      throw new NotFoundError('User not found','USER_NOT_FOUND')
     }
 
-    res.status(StatusCodes.OK).json({msg:`Welcome ${name}!`});
+    res.status(StatusCodes.OK).json({success:true, data:{user}});
 })
 
 Route.patch("/me",validate(updateProfileSchema),async (req, res) => {
@@ -25,14 +27,14 @@ Route.patch("/me",validate(updateProfileSchema),async (req, res) => {
     throw new UnauthenticatedError("Unauthorized user", "AUTH_REQUIRED");
   }
 
-  const user = await User.findByIdAndUpdate({_id:userID},req.body,{new:true});
+  const updatedUser = await User.findByIdAndUpdate({_id:userID},req.body,{new:true}).select('_id name email');
 
-  if (!user)
+  if (!updatedUser)
   {
     throw new NotFoundError('User Not found','USER_NOT_FOUND');
   }
 
-  res.status(StatusCodes.OK).json({user});
+  res.status(StatusCodes.OK).json({success:true, data:{updatedUser}});
 
 
 });
@@ -62,9 +64,9 @@ Route.patch("/me/password",validate(changePasswordSchema),async (req, res) => {
   const salt = await bcrypt.genSalt(10);
   const password = await bcrypt.hash(newPassword, salt);
 
-  const updatedUser = await User.findByIdAndUpdate({_id:userID},{password},{new:true})
+  const updatedUser = await User.findByIdAndUpdate({_id:userID},{password},{new:true}).select('_id email name')
 
-  res.status(StatusCodes.OK).json({updatedUser});
+  res.status(StatusCodes.OK).json({success: true, data:{updatedUser}});
 });
 
 module.exports=Route;
