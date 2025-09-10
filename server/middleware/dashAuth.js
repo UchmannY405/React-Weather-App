@@ -1,11 +1,12 @@
 const JWT = require('jsonwebtoken');
+const { UnauthenticatedError } = require('../errors/customAPIError');
 
 const dashAuth = (req,res,next)=>{
     const { authorization } = req.headers;
     
     if(!authorization || !authorization.startsWith('Bearer'))
     {
-        throw new Error('Incorrect token provided')
+        throw new UnauthenticatedError('Authorization token missing','AUTH_REQUIRED')
     }
 
     const token = authorization.split(' ')[1];
@@ -18,7 +19,7 @@ const dashAuth = (req,res,next)=>{
     }
     catch(err)
     {
-        throw new Error('Unauthenticated request')
+        throw new UnauthenticatedError('Invalid or expired token','AUTH_INVALID_TOKEN')
     }
 }
 
