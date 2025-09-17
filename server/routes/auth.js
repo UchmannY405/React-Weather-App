@@ -10,12 +10,20 @@ const {StatusCodes} = require('http-status-codes')
 const Route = express.Router();
 
 Route.post('/register',validate(registerSchema),async (req,res)=>{
+    const {email} = req.body;
+
+    const existingUser = await User.findOne({ email });
+    if (existingUser) {
+      throw new BadRequestError("Email already registered", "USER_EXISTS");
+    }
+    
     const user = await User.create(req.body);
 
     if(!user)
     {
       throw new BadRequestError('User not created','USER_CREATION_FAILED')
     }
+
     res.status(StatusCodes.CREATED).json({user});
 })
 
