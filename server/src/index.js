@@ -2,6 +2,7 @@ require('dotenv').config();
 require('express-async-errors');
 const connectDB = require('../db/connect');
 const express = require('express');
+const cors = require('cors');
 const app = express();
 const authRoute = require('../routes/auth')
 const userRoute = require('../routes/users')
@@ -12,6 +13,14 @@ const errorHandlerMiddleware = require('../middleware/error-handler')
 const PORT = process.env.PORT || 5050
 
 app.use(express.json());
+
+app.use(
+  cors({
+    origin: "http://localhost:5173",
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    credentials: true,
+  })
+);
 
 app.use('/api/v1/auth',authRoute);
 app.use('/api/v1/users',dashAuth,userRoute);
