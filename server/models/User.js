@@ -37,6 +37,14 @@ const userSchema = new mongoose.Schema(
       minlength: [2, "Enter a valid city"],
       maxlength: [100, "City name is too long"],
     },
+    latitude: {
+      type: Number,
+      required: [true, "Latitude is missing"],
+    },
+    longitude: {
+      type: Number,
+      required: [true, "Longitude is missing"],
+    },
 
     // Store ISO 3166-1 alpha-2 code (e.g., "IE", "GB")
     country: {
