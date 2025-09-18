@@ -21,6 +21,8 @@ const registerSchema = z.object({
     .trim()
     .length(2, "Use 2-letter country code")
     .transform((c) => c.toUpperCase()),
+  latitude: z.number({ required_error: "Latitude missing" }),
+  longitude: z.number({ required_error: "Longitude missing" }),
 });
 
 const loginSchema = z.object({
