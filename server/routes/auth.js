@@ -51,7 +51,15 @@ Route.post("/login", validate(loginSchema),async(req, res) => {
       success: true,
       data: {
         token,
-        user: { _id: user._id, name: user.name, email: user.email },
+        user: { 
+          _id: user._id, 
+          name: user.name, 
+          email: user.email,
+          country: user.country,
+          city: user.city,
+          latitude: user.latitude,
+          longitude: user.longitude
+        },
       },
     });
 });
