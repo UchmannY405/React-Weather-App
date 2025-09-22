@@ -1,4 +1,4 @@
-require("dotenv").config();
+
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
@@ -28,7 +28,6 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, "Please provide password"],
       minlength: 6,
-      //maxlength: 20,
     },
     city: {
       type: String,
@@ -46,11 +45,10 @@ const userSchema = new mongoose.Schema(
       required: [true, "Longitude is missing"],
     },
 
-    // Store ISO 3166-1 alpha-2 code (e.g., "IE", "GB")
     country: {
       type: String,
       required: [true, "Country is required"],
-      uppercase: true, // normalize for consistency
+      uppercase: true, 
       trim: true,
       minlength: [2, "Use 2-letter country code"],
       maxlength: [2, "Use 2-letter country code"],
@@ -63,11 +61,10 @@ const userSchema = new mongoose.Schema(
     },
   },
   {
-    timestamps: true, // createdAt, updatedAt
+    timestamps: true, 
     toJSON: {
       virtuals: true,
       transform: (_doc, ret) => {
-        // never expose hash or __v in API responses
         delete ret.passwordHash;
         delete ret.__v;
         return ret;
@@ -83,12 +80,7 @@ userSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });
-/*
-When the post request is sent with the user credentials, just after the User.create line
-runs and before its written unto the db, this middleware runs and takes the password
-from the req.body document and hashes it before being written together withe the rest
-of the user data
-*/
+
 
 userSchema.methods.createJWT = async function () {
   return await jwt.sign(
@@ -97,10 +89,9 @@ userSchema.methods.createJWT = async function () {
     { expiresIn: "30d" }
   );
 };
-//functions are used here so that we can use this keyword to point to properties in the document
 
 userSchema.methods.verifyPassword = async function (userPassword) {
-  const isCorrectPassword = await bcrypt.compare(userPassword, this.password); //returns a boolean value
+  const isCorrectPassword = await bcrypt.compare(userPassword, this.password); 
   return isCorrectPassword;
 };
 

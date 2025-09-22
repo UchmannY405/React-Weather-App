@@ -8,7 +8,10 @@ import MenuItem from "@mui/material/MenuItem";
 import Button from "@mui/material/Button";
 import Stack from "@mui/material/Stack";
 import Box from "@mui/material/Box";
+import Container from "@mui/material/Container";
+import Paper from "@mui/material/Paper";
 import Alert from "@mui/material/Alert";
+import Typography from "@mui/material/Typography";
 import { useNavigate } from "react-router-dom";
 import { Autocomplete } from "@mui/material";
 import { publicApi } from "../api";
@@ -138,120 +141,152 @@ React.useEffect(() => {
   };
 
   return (
-    <Box
-      component="form"
-      onSubmit={handleSubmit(onSubmit)}
-      noValidate
+    <Container
+      maxWidth="sm"
+      disableGutters
       sx={{
-        maxWidth: 420,
+        minHeight: "100vh",
         display: "flex",
+        alignItems: "flex-start",
         justifyContent: "center",
+        px: 2,
+        pt: { xs: 6, sm: 8 },
       }}
     >
-      <Stack spacing={2}>
-        {errors.root?.message && (
-          <Alert severity="error">{errors.root.message}</Alert>
-        )}
-        <Controller
-          name="name"
-          control={control}
-          render={({ field, fieldState }) => (
-            <TextField
-              {...field}
-              label="Name"
-              error={!!fieldState.error}
-              helperText={fieldState.error?.message}
-              fullWidth
-            />
-          )}
-        />
-        <Controller
-          name="email"
-          control={control}
-          render={({ field, fieldState }) => (
-            <TextField
-              {...field}
-              type="email"
-              label="Email"
-              error={!!fieldState.error}
-              helperText={fieldState.error?.message}
-              fullWidth
-            />
-          )}
-        />
-        <Controller
-          name="password"
-          control={control}
-          render={({ field, fieldState }) => (
-            <TextField
-              {...field}
-              type="password"
-              label="Password"
-              error={!!fieldState.error}
-              helperText={fieldState.error?.message}
-              fullWidth
-            />
-          )}
-        />
-        <Controller
-          name="city"
-          control={control}
-          render={({ field, fieldState }) => (
-            <Autocomplete
-              options={cityOptions}
-              getOptionLabel={(opt) =>
-                typeof opt === "string" ? opt : opt.label
-              }
-              onInputChange={(_, newInput) => setCityInput(newInput)}
-              onChange={(_, option) => {
-                if (option && typeof option === "object") {
-                  field.onChange(option.city); // visible city text
-                  setValue("country", option.country ?? "", {
-                    shouldValidate: true,
-                  });
-                  setValue("latitude", option.latitude, { shouldValidate: true }); // hidden
-                  setValue("longitude", option.longitude, { shouldValidate: true }); // hidden
-                } else {
-                  field.onChange("");
-                  setValue("country", "");
-                  setValue("latitude", undefined);
-                  setValue("longitude", undefined);
-                }
-              }}
-              renderInput={(params) => (
+      <Paper
+        elevation={0}
+        sx={{
+          width: "100%",
+          maxWidth: 480,
+          border: "1px solid #e5e7eb",
+          borderRadius: 2,
+          boxShadow: "0 1px 2px rgba(0,0,0,0.04)",
+          p: { xs: 2.5, sm: 3.5 },
+          mx: "auto",
+        }}
+      >
+        <Typography variant="h5" sx={{ fontWeight: 600, mb: 0.5 }}>
+          Create your account
+        </Typography>
+        <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
+          Enter your details to get started.
+        </Typography>
+
+        <Box
+          component="form"
+          onSubmit={handleSubmit(onSubmit)}
+          noValidate
+          sx={{ width: "100%" }}
+        >
+          <Stack spacing={2}>
+            {errors.root?.message && (
+              <Alert severity="error">{errors.root.message}</Alert>
+            )}
+
+            <Controller
+              name="name"
+              control={control}
+              render={({ field, fieldState }) => (
                 <TextField
-                  {...params}
-                  label="City"
-                  value={field.value}
-                  onChange={(e) => field.onChange(e.target.value)}
+                  {...field}
+                  label="Name"
                   error={!!fieldState.error}
                   helperText={fieldState.error?.message}
                   fullWidth
                 />
               )}
             />
-          )}
-        />
-        <Controller
-          name="country"
-          control={control}
-          render={({ field, fieldState }) => (
-            <TextField
-              {...field}
-              label="Country"
-              InputProps={{ readOnly: true }}
-              error={!!fieldState.error}
-              helperText={fieldState.error?.message}
-              fullWidth
-            />
-          )}
-        />
 
-        <Button type="submit" variant="contained" disabled={isSubmitting}>
-          {isSubmitting ? "Creating account…" : "Create account"}
-        </Button>
-      </Stack>
-    </Box>
+            <Controller
+              name="email"
+              control={control}
+              render={({ field, fieldState }) => (
+                <TextField
+                  {...field}
+                  type="email"
+                  label="Email"
+                  error={!!fieldState.error}
+                  helperText={fieldState.error?.message}
+                  fullWidth
+                />
+              )}
+            />
+
+            <Controller
+              name="password"
+              control={control}
+              render={({ field, fieldState }) => (
+                <TextField
+                  {...field}
+                  type="password"
+                  label="Password"
+                  error={!!fieldState.error}
+                  helperText={fieldState.error?.message}
+                  fullWidth
+                />
+              )}
+            />
+
+            <Controller
+              name="city"
+              control={control}
+              render={({ field, fieldState }) => (
+                <Autocomplete
+                  options={cityOptions}
+                  getOptionLabel={(opt) =>
+                    typeof opt === "string" ? opt : opt.label
+                  }
+                  onInputChange={(_, newInput) => setCityInput(newInput)}
+                  onChange={(_, option) => {
+                    if (option && typeof option === "object") {
+                      field.onChange(option.city);
+                      setValue("country", option.country ?? "", { shouldValidate: true });
+                      setValue("latitude", option.latitude, { shouldValidate: true });
+                      setValue("longitude", option.longitude, { shouldValidate: true });
+                    } else {
+                      field.onChange("");
+                      setValue("country", "");
+                      setValue("latitude", undefined);
+                      setValue("longitude", undefined);
+                    }
+                  }}
+                  renderInput={(params) => (
+                    <TextField
+                      {...params}
+                      label="City"
+                      value={field.value}
+                      onChange={(e) => field.onChange(e.target.value)}
+                      error={!!fieldState.error}
+                      helperText={fieldState.error?.message}
+                      fullWidth
+                    />
+                  )}
+                />
+              )}
+            />
+
+            <Controller
+              name="country"
+              control={control}
+              render={({ field, fieldState }) => (
+                <TextField
+                  {...field}
+                  label="Country"
+                  InputProps={{ readOnly: true }}
+                  error={!!fieldState.error}
+                  helperText={fieldState.error?.message}
+                  fullWidth
+                />
+              )}
+            />
+
+            <Button type="submit" variant="contained" disabled={isSubmitting} fullWidth>
+              {isSubmitting ? "Creating account…" : "Create account"}
+            </Button>
+          </Stack>
+        </Box>
+      </Paper>
+    </Container>
   );
 }
 
