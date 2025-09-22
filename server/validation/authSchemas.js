@@ -1,4 +1,4 @@
-const { z } = require("zod");
+const { z, email } = require("zod");
 
 const emailSchema = z
   .string()
@@ -34,12 +34,15 @@ const updateProfileSchema = z
   .object({
     name: z.string().trim().min(2).optional(),
     city: z.string().trim().min(2).optional(),
+    email: emailSchema.optional(),
     country: z
       .string()
       .trim()
       .length(2, "Use 2-letter country code")
       .transform((c) => c.toUpperCase())
       .optional(),
+    latitude: z.coerce.number().optional(), // ← coerce
+    longitude: z.coerce.number().optional(),
   })
   .refine((data) => Object.keys(data).length > 0, {
     message: "Provide at least one field to update",
