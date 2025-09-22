@@ -42,6 +42,12 @@ export function AuthProvider({ children }) {
      const token = res.data.data.token;
      localStorage.setItem("token", token);
   };
+  
+  const updatedUser = async (email, city, country, latitude, longitude) => {
+    const res = await api.patch('/users/me', { email, city, country, latitude, longitude });
+    const user = res.data.data.updatedUser;
+    setUser(user);
+  };
 
   const logout = ()=>{
     localStorage.removeItem('token');
@@ -49,7 +55,7 @@ export function AuthProvider({ children }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, login, logout }}>
+    <AuthContext.Provider value={{ user, login, logout, updatedUser}}>
       {children}
     </AuthContext.Provider>
   );
@@ -59,10 +65,4 @@ export function useAuth() {
   return useContext(AuthContext);
 }
 
-/* 
-SUMMARY:
-1. The authProvider component is used to manage the user state and define the login and logout functions. 
-2. AUTHprovider uses Authcontext.provider which is a property of Authcontext to make this available to the entire app when AuthProvider is used 
-to wrap the app in main.js. 
-3. Define useAuth hook to hold usecontext(authContext) which can carry the values held by authProvider to anywhere its needed in the app.
-*/
+
