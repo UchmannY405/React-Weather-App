@@ -23,6 +23,7 @@ import WbCloudyIcon from '@mui/icons-material/WbCloudy';
 import IconButton from "@mui/material/IconButton";
 import SettingsIcon from "@mui/icons-material/Settings";
 import HomeIcon from "@mui/icons-material/Home";
+import LogoutIcon from "@mui/icons-material/Logout";
 import { useAuth } from './features/AuthContext';
 
 function App() {
@@ -150,10 +151,25 @@ function App() {
                         logout?.();
                         navigate("/login", { replace: true });
                       }}
-                      sx={{ fontWeight: 600 }}
+                      sx={{
+                        fontWeight: 600,
+                        display: { xs: "none", sm: "inline-flex" },
+                      }}
                     >
                       Logout
                     </Button>
+
+                    <IconButton
+                      color="inherit"
+                      onClick={() => {
+                        logout?.();
+                        navigate("/login", { replace: true });
+                      }}
+                      sx={{ display: { xs: "inline-flex", sm: "none" } }} 
+                    >
+                      <LogoutIcon />
+                    </IconButton>
+
                     <IconButton
                       component={Link}
                       to={"/user-update"}
