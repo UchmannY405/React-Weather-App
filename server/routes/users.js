@@ -10,7 +10,9 @@ const {StatusCodes} = require("http-status-codes");
 Route.get('/me',async (req,res)=>{
     const { userID } = req.user;
 
-    const user = await User.findById(userID).select('_id name email')
+    const user = await User
+      .findById(userID)
+      .select('_id name email city country latitude longitude');
 
     if(!user)
     {
@@ -27,14 +29,27 @@ Route.patch("/me",validate(updateProfileSchema),async (req, res) => {
     throw new UnauthenticatedError("Unauthorized user", "AUTH_REQUIRED");
   }
 
-  const updatedUser = await User.findByIdAndUpdate({_id:userID},req.body,{new:true}).select('_id name email');
+  const updatedUser = await User.findByIdAndUpdate({_id:userID},req.body,{new:true});
 
   if (!updatedUser)
   {
     throw new NotFoundError('User Not found','USER_NOT_FOUND');
   }
 
-  res.status(StatusCodes.OK).json({success:true, data:{updatedUser}});
+  res.status(StatusCodes.OK).json({
+    success: true,
+    data: {
+      updatedUser: {
+        _id: updatedUser._id,
+        name: updatedUser.name,
+        email: updatedUser.email,
+        city: updatedUser.city,
+        country: updatedUser.country,
+        latitude: updatedUser.latitude,
+        longitude: updatedUser.longitude,
+      },
+    },
+  });
 
 
 });
