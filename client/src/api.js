@@ -1,6 +1,11 @@
 import axios from 'axios'
 
+
 const api = axios.create({
+  baseURL: import.meta.env.VITE_API_BASE_URL,
+});
+
+const publicApi = axios.create({
   baseURL: import.meta.env.VITE_API_BASE_URL,
 });
 
@@ -15,17 +20,21 @@ api.interceptors.request.use((config)=>{
 
 api.interceptors.response.use(
     (res)=>res,
-    (error)=>{
+    (err)=>{
         const code = err?.response?.data?.code;
         const status = err?.response?.status;
-        if (status===401 || code==='AUTH_INVALID_TOKEN' || code==='AUTH_REQUIRED')
+        const url = err?.config?.url || '';
+
+        const isAuthErr = status === 401 || code === "AUTH_INVALID_TOKEN" || code === "AUTH_REQUIRED";
+        const isUrl = url.includes('/auth/login');
+        if (isAuthErr && !isUrl)
         {
             localStorage.removeItem('token');
             window.location.href = "/login";
         }
-        return Promise.reject(error);
+        return Promise.reject(err);
     }    
 );
 
-export default api;
+export {api, publicApi};
 
