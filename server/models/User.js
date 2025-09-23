@@ -80,7 +80,12 @@ userSchema.pre("save", async function (next) {
   this.password = await bcrypt.hash(this.password, salt);
   next();
 });
-
+/*
+When the post request is sent with the user credentials, just after the User.create line
+runs and before its written unto the db, this middleware runs and takes the password
+from the req.body document and hashes it before being written together withe the rest
+of the user data
+*/
 
 userSchema.methods.createJWT = async function () {
   return await jwt.sign(

@@ -210,3 +210,11 @@ function CitySearch() {
   }
   
   export default CitySearch
+  
+  /*
+  1. A user types a city (text state).
+  2. this is used to fetch the city options based on the text (city options state)
+  3. when the user selects a city (selectedCity state), this automatically becomes the text state
+  4. when the user clicks the search button, its used to fetch the waether details which is display on the 
+  paper (weatherDetails state);
+  */

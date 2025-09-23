@@ -65,4 +65,10 @@ export function useAuth() {
   return useContext(AuthContext);
 }
 
-
+/* 
+SUMMARY:
+1. The authProvider component is used to manage the user state and define the login and logout functions. 
+2. AUTHprovider uses Authcontext.provider which is a property of Authcontext to make this available to the entire app when AuthProvider is used 
+to wrap the app in main.js. 
+3. Define useAuth hook to hold usecontext(authContext) which can carry the values held by authProvider to anywhere its needed in the app.
+*/
