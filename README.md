@@ -1,7 +1,8 @@
 # 🌦️ My Weather App
 
-A simple, responsive weather application built with **React** and **Material UI (MUI)**.  
-Users can search for a city, select from suggestions, and view current weather details such as temperature, wind speed, humidity, and description with an icon.
+A full-stack weather application built with **React + Material UI (MUI)** on the frontend and **Node.js + Express + MongoDB** on the backend.  
+Users can search for a city, view current weather, and manage personalized settings through an authenticated dashboard.
+
 
 ---
 
@@ -13,6 +14,8 @@ Users can search for a city, select from suggestions, and view current weather d
 
 ## 🚀 Features
 
+
+### Frontend
 - 🔍 **City Search with Autocomplete**  
   Type in a city name and get dynamic suggestions powered by the OpenWeather Geocoding API.
 
@@ -34,35 +37,84 @@ Users can search for a city, select from suggestions, and view current weather d
 
 ---
 
+### Backend
+- 🔐 **Authentication**  
+  - Register and login with secure JWT tokens.  
+  - Tokens stored in localStorage and validated on each request.  
+  - Protected routes (e.g., dashboard).  
+
+- 🧑 **User Profile Management**  
+  - Update profile details (email, city, country, latitude, longitude).  
+  - Validations enforced with **Zod** and Express middleware.  
+
+- 🌍 **Weather API Proxy**  
+  - Frontend requests go through the backend (no exposed API keys).  
+  - Consistent error handling with custom error classes. 
+---
+
 ## 🛠️ Tech Stack
 
-- **React (Vite)** — front-end framework  
-- **Material UI (MUI)** — UI components and styling  
-- **OpenWeather API** — weather and geocoding data  
-- **JavaScript (ES6+)**
+**Frontend**
+- React (Vite)  
+- Material UI (MUI)  
+- Axios (with interceptors)  
+
+**Backend**
+- Node.js + Express  
+- MongoDB + Mongoose  
+- Zod (schema validation)  
+- JWT (authentication)  
+
+**APIs**
+- OpenWeather (Geocoding + Weather)  
 
 ---
 
 ## ⚙️ How It Works
 
-1. A user types a city → updates the `text` state.  
-2. This triggers a fetch for matching cities → updates the `cityOptions` state.  
-3. When a user selects a city → it updates the `selectedCity` and input.  
-4. Clicking the search button → fetches weather details for the selected city.  
-5. Weather details are stored in `weatherDetails` state and displayed in a Paper card.
+### Frontend Flow
+1. User types a city → triggers `text` state update.  
+2. Fetch for matching cities → updates `cityOptions` state.  
+3. Selecting a city updates `selectedCity`.  
+4. Clicking search → requests backend weather endpoint.  
+5. Weather data returned and displayed in MUI components.  
+
+### Backend Flow
+1. **Auth Routes**  
+   - `POST /auth/register` → creates user.  
+   - `POST /auth/login` → validates credentials, returns JWT.  
+   - `GET /auth/me` → returns current user based on token.  
+
+2. **User Routes**  
+   - `PATCH /user/update` → update profile details.  
+
+3. **Weather Routes**  
+   - `GET /weather` → fetches weather from OpenWeather API (proxied). 
 
 ---
 
 ## 📸 Screenshots
 
 ### Autocomplete Search Feature
-![Autocomplete Search Feature](./src/App_Screenshots/Autcomplete%20Search%20Feature.jpg)  
+![Autocomplete Search Feature](./client/src/App_Screenshots/Autcomplete%20Search%20Feature.jpg)  
 
 ### Mobile Device View
-![Mobile App view](./src/App_Screenshots/Mobile%20View.jpg)
+![Mobile App view](./client/src/App_Screenshots/Mobile%20View.jpg)
 
 ### Desktop View
-![Desktop view](./src/App_Screenshots/Desktop%20View.jpg)  
+![Desktop view](./client/src/App_Screenshots/Desktop%20View.jpg)  
+
+### Login Page
+![Login Page](./client/src/App_Screenshots/Login_Page.jpg)  
+
+### Dashboard
+![Dashboard](./client/src/App_Screenshots/Dashboard.jpg)  
+
+### Update Info Page
+![Update Info Page](./client/src/App_Screenshots/Update_User_Info_Page.jpg) 
+
+### Post Update Page
+![Post Update Page](./client/src/App_Screenshots/PostUpdate_Dashboard%20.jpg)  
 
 ---
 
@@ -83,43 +135,52 @@ VITE_WEATHER_API_KEY=your_api_key_here
 
 ## 📚 What I Learned
 
-- How to integrate third-party APIs (OpenWeather) into a React project.  
+- Structuring a full-stack project with client and server.  
 - Managing multiple pieces of state (`text`, `cityOptions`, `selectedCity`, `weatherDetails`) effectively.  
-- Using **Material UI** components (`Autocomplete`, `Paper`, `Box`, `Typography`) with responsive styling (`sx` prop).  
-- Debouncing API calls with `setTimeout` inside `useEffect`.  
-- Structuring a project for both desktop and mobile responsiveness.
+- Designing an Express backend with routes, middleware, and error handling.
+- Using MongoDB + Mongoose with Zod for robust validation. 
+- Implementing JWT authentication and protecting routes.
+- Connecting React frontend to a Node.js backend with Axios interceptors.
 
 ---
 
 ## 💡 Future Improvements
 
-- 🔐 Add backend support for user authentication with personalized dashboards (planned).
-- ⭐ Save favorite cities in localStorage for quick access.  
+- ⭐ Save favorite cities in user profiles.  
 - 🔄 Refresh weather data automatically every few minutes.  
 - 🌑 Add dark mode toggle for better UX.  
 
-
+---
 
 ## ▶️ Getting Started
 
-Clone the repository:
+### Clone the repository:
 
 ```bash
 git clone https://github.com/<your-username>/my-weather-app.git
 cd my-weather-app
 ```
 
-Install dependencies:
+### Backend Setup
 
 ```bash
+cd server
 npm install
-```
-
-Start the development server:
-
-```bash
 npm run dev
 ```
+Runs on http://localhost:5000.
 
-Open your browser and navigate to the local development URL shown in your terminal (usually `http://localhost:5173`).
+### Frontend Setup
+
+```bash
+cd client
+npm install
+npm run dev
+```
+Runs on http://localhost:5173.
+
+Make sure both backend and frontend servers are running simultaneously for the app to function correctly.
+
+
+
 
